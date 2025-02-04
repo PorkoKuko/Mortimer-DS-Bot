@@ -1,0 +1,21 @@
+import { SlashCommandBuilder } from "discord.js";
+
+
+
+export const data = new SlashCommandBuilder();
+    data.setName('jojo-gif');
+    data.setDescription('envia un gif de jojos aleatorio!');
+
+
+
+let url = `https://api.tenor.com/v1/search?q=JJBA&key=${process.env.TENORKEY}&limit=8`
+let response = await fetch(url);
+let json = await response.json();
+console.log(json);
+
+export async function execute(interaction) {
+    await interaction.reply(
+        json.results[0].url
+    );
+}
+
