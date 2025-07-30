@@ -16,11 +16,18 @@ export async function execute(interaction) {
 
     if (channel) {
         try {
+            await interaction.deferReply();
+
             const connection = await joinChannel(channel);
             await playYouTube(connection, url);
-            await interaction.reply(`Reproduciendo: ${url}`);
+
+            await interaction.editReply(`Reproduciendo: ${url}`);
         } catch (error) {
-            await interaction.reply(`Error: ${error.message}`);
+            if (interaction.deferred || interaction.replied) {
+                await interaction.editReply(`Error: ${error.message}`);
+            } else {
+                await interaction.reply(`Error: ${error.message}`);
+            }
         }
     } else {
         await interaction.reply('Tienes que estar en un canal de voz primero!');

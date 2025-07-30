@@ -35,6 +35,11 @@ await client.login(process.env.TOKEN);
 // Fetch guilds and register commands for each guild
 const guilds = await client.guilds.fetch(); // Fetch all guilds the bot is in
 
+if (!process.env.CLIENTID) {
+  console.error('Error: CLIENTID environment variable is not set.');
+  process.exit(1);
+}
+
 (async () => {
   try {
     console.log(`Started refreshing ${commands.length} application (/) commands.`);

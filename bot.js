@@ -10,12 +10,15 @@ import * as join from './commands/join.js';
 import * as play from './commands/play.js';
 import * as leave from './commands/leave.js';
 import * as confession from './commands/confession.js'; // Import the confession command
+import * as askMortimer from './commands/askMortimer.js'; // Import the askMortimer command
 
 config();
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
 });
+
+export { client };
 
 function readyDiscord() {
     console.log('estoy vivo xd ' + client.user.tag);
@@ -53,6 +56,9 @@ async function handleInteraction(interaction) {
     }
     if (interaction.commandName === 'confess') { // Handle the confession command
         await confession.execute(interaction);
+    }
+    if (interaction.commandName === 'askMortimer') {  // Handle the askMortimer command
+        await askMortimer.execute(interaction);
     }
 }
 

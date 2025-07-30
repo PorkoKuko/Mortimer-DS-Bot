@@ -6,6 +6,8 @@ const { sodium } = pkg;
 
 import { config } from 'dotenv';
 
+import { client } from './bot.js'; // Import the client from bot.js
+
 config(); // Load .env file
 
 await pkg.ready;
@@ -64,12 +66,16 @@ export async function playYouTube(connection, url) {
         stream.on('info', info => {
             console.log(`Streaming: ${info.videoDetails.title}`);
             const videoDuration = info.videoDetails.lengthSeconds; // Get video duration in seconds
-            const channel = connection.channel; // Get the channel from the connection
+            const CHANNEL_ID = 1011462520134959254; // Replace with your channel ID
+            const channel = client.channels.cache.get('CHANNEL_ID'); // Get the channel from the connection
             resetInactivityTimer(connection.guildId, videoDuration + 180); // Set inactivity timer to video duration + 3 minutes
             
             // Check if channel is defined before sending the message
             if (channel) {
                 channel.send(`La duración del video es: ${videoDuration} segundos.`); // Send video duration to channel
+                channel.send(`Reproduciendo: ${info.videoDetails.title}`); // Notify the channel about the video being played
+                channel.send(`URL: ${url}`); // Send the URL of the video
+                
             } else {
                 console.error('Channel is undefined. Cannot send video duration message.');
             }
